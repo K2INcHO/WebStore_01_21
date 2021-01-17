@@ -18,6 +18,8 @@ namespace WebStore_2021
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddMvc();
+            services.AddControllersWithViews();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -27,10 +29,13 @@ namespace WebStore_2021
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles(); //подключаем статическое содержимое
+
             app.UseRouting();
 
             //var greetings = Configuration["Greetings"];
 
+            //прописываем маршруты
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/greetings", async context =>
@@ -38,10 +43,11 @@ namespace WebStore_2021
                     await context.Response.WriteAsync("Greetings");
                 });
 
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync(Configuration["Greetings"]);
-                });
+                endpoints.MapControllerRoute(
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}"); //? - значит, что параметр необязателен
+                // http://localhost:5000/ -> controller = "Home" action = "Index" параметр = null
+                // http://localhost:5000/Catalog/Products/5 -> controller = "Catalog" action = "Products" параметр = 5
             });
         }
     }
