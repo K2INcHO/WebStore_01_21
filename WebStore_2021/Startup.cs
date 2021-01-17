@@ -33,6 +33,11 @@ namespace WebStore_2021
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/greetings", async context =>
+                {
+                    await context.Response.WriteAsync("Greetings");
+                });
+
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync(Configuration["Greetings"]);
