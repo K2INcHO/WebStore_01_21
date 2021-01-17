@@ -20,6 +20,7 @@ namespace WebStore_2021
         {
             //services.AddMvc();
             services.AddControllersWithViews();
+            //services.AddControllersWithViews().AddRazorRunTimeCompilation(); // будет раскомментровано после обновления asp.net до версии 5.0
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
