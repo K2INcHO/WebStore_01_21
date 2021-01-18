@@ -7,20 +7,20 @@ using Microsoft.Extensions.Hosting;
 
 namespace WebStore_2021
 {
-    public class Startup
+    public record Startup(IConfiguration Configuration)
     {  
-        private IConfiguration Configuration { get; }
+        //private IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration Configuration)
-        {
-            this.Configuration = Configuration;
-        }
+        //public Startup(IConfiguration Configuration)
+        //{
+        //    this.Configuration = Configuration;
+        //}
 
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddMvc();
-            services.AddControllersWithViews();
-            //services.AddControllersWithViews().AddRazorRunTimeCompilation(); // будет раскомментровано после обновления asp.net до версии 5.0
+            //services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

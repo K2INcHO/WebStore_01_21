@@ -17,5 +17,7 @@ namespace WebStore_2021.Models
         public string Patronymic { get; set; }
 
         public int Age { get; set; }
+
+        public string DateOfBirth { get; set; }
     }
 }

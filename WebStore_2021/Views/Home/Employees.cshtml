@@ -10,7 +10,6 @@
 <body>
 
     <h3>Сотрудники</h3>
-    <a href="~/Home/Index">Главная</a>
 
     <table>
         <thead>
@@ -28,15 +27,17 @@
             {
                 <tr>
                     <td>@employee.Id</td>
-                    <td>@employee.LastName</td>
+                    <td>@Html.ActionLink(employee.LastName, "Card", new { id = employee.Id })</td>
                     <td>@employee.FirstName</td>
                     <td>@employee.Patronymic</td>
                     <td>@employee.Age</td>
                 </tr>
             }
         </tbody>
-
     </table>
+
+    <hr />
+    <a href="~/Home/Index">Главная</a>
 
 </body>
 </html>
