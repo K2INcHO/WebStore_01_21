@@ -30,7 +30,7 @@ namespace WebStore_2021
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles(); //подключаем статическое содержимое
+            app.UseStaticFiles(); //подключаем статическое содержимое (по умолчанию будет жить в wwwroot)
 
             app.UseRouting();
 
