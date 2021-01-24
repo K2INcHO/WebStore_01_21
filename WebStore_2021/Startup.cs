@@ -9,17 +9,8 @@ namespace WebStore_2021
 {
     public record Startup(IConfiguration Configuration)
     {  
-        //private IConfiguration Configuration { get; }
-
-        //public Startup(IConfiguration Configuration)
-        //{
-        //    this.Configuration = Configuration;
-        //}
-
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddMvc();
-            //services.AddControllersWithViews();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
@@ -34,11 +25,10 @@ namespace WebStore_2021
 
             app.UseRouting();
 
-            //var greetings = Configuration["Greetings"];
-
             //прописываем маршруты
             app.UseEndpoints(endpoints =>
             {
+                // Проекция запроса на действие
                 endpoints.MapGet("/greetings", async context =>
                 {
                     await context.Response.WriteAsync("Greetings");
