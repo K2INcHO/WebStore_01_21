@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebStore_2021.Infrastructure.Conventions;
 using WebStore_2021.Infrastructure.Middleware;
 
 namespace WebStore_2021
@@ -12,7 +13,10 @@ namespace WebStore_2021
     {  
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddMvc(opt => opt.Conventions.Add(new TestControllerModelConvention())); // можно писать так
+            services
+                .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConvention())*/)
+                .AddRazorRuntimeCompilation();
         }
         // Все вызовы к классу App - добавление промежуточного ПО (настройка конвейера)
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
