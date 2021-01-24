@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+ï»¿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -21,14 +21,14 @@ namespace WebStore_2021
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles(); //ïîäêëþ÷àåì ñòàòè÷åñêîå ñîäåðæèìîå (ïî óìîë÷àíèþ áóäåò æèòü â wwwroot)
+            app.UseStaticFiles(); //Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡Ð°ÐµÐ¼ ÑÑ‚Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¾Ðµ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ð¾Ðµ (Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ Ð±ÑƒÐ´ÐµÑ‚ Ð¶Ð¸Ñ‚ÑŒ Ð² wwwroot)
 
             app.UseRouting();
 
-            //ïðîïèñûâàåì ìàðøðóòû
+            //Ð¿Ñ€Ð¾Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÐ¼ Ð¼Ð°Ñ€ÑˆÑ€ÑƒÑ‚Ñ‹
             app.UseEndpoints(endpoints =>
             {
-                // Ïðîåêöèÿ çàïðîñà íà äåéñòâèå
+                // ÐŸÑ€Ð¾ÐµÐºÑ†Ð¸Ñ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ° Ð½Ð° Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ
                 endpoints.MapGet("/greetings", async context =>
                 {
                     await context.Response.WriteAsync("Greetings");
@@ -36,9 +36,9 @@ namespace WebStore_2021
 
                 endpoints.MapControllerRoute(
                     "default",
-                    "{controller=Home}/{action=Index}/{id?}"); //? - çíà÷èò, ÷òî ïàðàìåòð íåîáÿçàòåëåí
-                // http://localhost:5000/ -> controller = "Home" action = "Index" ïàðàìåòð = null
-                // http://localhost:5000/Catalog/Products/5 -> controller = "Catalog" action = "Products" ïàðàìåòð = 5
+                    "{controller=Home}/{action=Index}/{id?}"); //? - Ð·Ð½Ð°Ñ‡Ð¸Ñ‚, Ñ‡Ñ‚Ð¾ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ð½ÐµÐ¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÐµÐ½
+                // http://localhost:5000/ -> controller = "Home" action = "Index" Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ = null
+                // http://localhost:5000/Catalog/Products/5 -> controller = "Catalog" action = "Products" Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ = 5
             });
         }
     }
