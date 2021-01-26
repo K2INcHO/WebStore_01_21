@@ -30,6 +30,8 @@ namespace WebStore_2021.Controllers
             return NotFound();
         }
 
+
+
         #region Edit
         public IActionResult Edit(int id)
         {
@@ -70,6 +72,35 @@ namespace WebStore_2021.Controllers
             return RedirectToAction("Index");
         }
         #endregion
+
+        #region Delete
+        public IActionResult Delete(int id)
+        {
+            if (id <= 0) return BadRequest();
+
+            var employee = _EmployeesData.Get(id);
+
+            if (employee is null)
+                return NotFound();
+
+            return View(new EmployeeViewModel
+            {
+                Id = employee.Id,
+                LastName = employee.LastName,
+                FirstName = employee.FirstName,
+                MiddleName = employee.Patronymic,
+                Age = employee.Age,
+            });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _EmployeesData.Delete(id);
+            return RedirectToAction("Index");
+        }
+        #endregion
+ 
 
         ////визуализируем список сотрудников
         //public IActionResult Employees()
