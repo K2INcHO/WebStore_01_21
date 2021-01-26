@@ -5,7 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore_2021.Infrastructure.Conventions;
+using WebStore_2021.Infrastructure.Interfaces;
 using WebStore_2021.Infrastructure.Middleware;
+using WebStore_2021.Infrastructure.Services;
 
 namespace WebStore_2021
 {
@@ -13,7 +15,10 @@ namespace WebStore_2021
     {  
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(opt => opt.Conventions.Add(new TestControllerModelConvention())); // можно писать так
+            //регистрируем сервис
+            services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
+
+            //services.AddMvc(opt => opt.Conventions.Add(new TestControllerModelConvention())); // можно писать так
             services
                 .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConvention())*/)
                 .AddRazorRuntimeCompilation();
