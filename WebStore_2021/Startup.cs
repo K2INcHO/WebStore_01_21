@@ -29,6 +29,7 @@ namespace WebStore_2021
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage(); // добавляется страница обработки исключений
+                app.UseBrowserLink();
             }
 
             app.UseStaticFiles(); //подключаем статическое содержимое (по умолчанию будет жить в wwwroot) - срабатывает проверка на обработку файла
