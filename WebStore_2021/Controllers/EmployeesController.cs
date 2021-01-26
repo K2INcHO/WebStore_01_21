@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using WebStore_2021.Data;
 using WebStore_2021.Infrastructure.Interfaces;
 using WebStore_2021.Models;
+using WebStore_2021.ViewModels;
 
 namespace WebStore_2021.Controllers
 {
@@ -26,6 +29,48 @@ namespace WebStore_2021.Controllers
                 return View(employee);
             return NotFound();
         }
+
+        #region Edit
+        public IActionResult Edit(int id)
+        {
+            if (id <= 0) return BadRequest();
+
+            var employee = _EmployeesData.Get(id);
+
+            if (employee is null)
+                return NotFound();
+
+            return View(new EmployeeViewModel
+            {
+                Id = employee.Id,
+                LastName = employee.LastName,
+                FirstName = employee.FirstName,
+                MiddleName = employee.Patronymic,
+                Age = employee.Age,
+            });
+        }
+        
+        [HttpPost]
+        public IActionResult Edit(EmployeeViewModel model)
+        {
+            if (model is null)
+                throw new ArgumentNullException(nameof(model));
+
+            var employee = new Employee
+            {
+                Id = model.Id,
+                LastName = model.LastName,
+                FirstName = model.FirstName,
+                Patronymic = model.MiddleName,
+                Age = model.Age
+            };
+
+            _EmployeesData.Update(employee);
+
+            return RedirectToAction("Index");
+        }
+        #endregion
+
         ////визуализируем список сотрудников
         //public IActionResult Employees()
         //{
