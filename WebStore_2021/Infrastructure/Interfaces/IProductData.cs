@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WebStore.Domain;
 using WebStore.Domain.Entities;
 
 namespace WebStore_2021.Infrastructure.Interfaces
@@ -7,6 +8,8 @@ namespace WebStore_2021.Infrastructure.Interfaces
     {
         IEnumerable<Section> GetSections();
 
-        IEnumerable<Brand> GetBrands(); 
+        IEnumerable<Brand> GetBrands();
+
+        IEnumerable<Product> GetProducts(ProductFilter Filter = null);
     }
 }
