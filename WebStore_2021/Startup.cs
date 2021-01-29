@@ -16,8 +16,9 @@ namespace WebStore_2021
     {  
         public void ConfigureServices(IServiceCollection services)
         {
-            //регистрируем сервис
+            //регистрируем сервисы
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
+            services.AddTransient<IProductData, InMemoryProductData>();
 
             services
                 .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConvention())*/)
