@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using WebStore.DAL.Context;
 using WebStore_2021.Infrastructure.Conventions;
 using WebStore_2021.Infrastructure.Interfaces;
 using WebStore_2021.Infrastructure.Middleware;
@@ -16,6 +18,9 @@ namespace WebStore_2021
     {  
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddDbContext<WebStoreDB>(opt => opt.UseSqlite(Configuration.GetConnectionString("Sqlite")));
+            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+
             //регистрируем сервисы
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
             services.AddTransient<IProductData, InMemoryProductData>();

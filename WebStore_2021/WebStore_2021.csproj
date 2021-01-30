@@ -3,11 +3,13 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<LangVersion>preview</LangVersion>
+		<UserSecretsId>f24fc7cd-3334-4704-9b32-6757e56a0024</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="FluentValidation.AspNetCore" Version="9.4.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
 		<PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" />
@@ -18,6 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\WebStore.DAL\WebStore.DAL.csproj" />
 	  <ProjectReference Include="..\WebStore.Domain\WebStore.Domain.csproj" />
 	</ItemGroup>
 
