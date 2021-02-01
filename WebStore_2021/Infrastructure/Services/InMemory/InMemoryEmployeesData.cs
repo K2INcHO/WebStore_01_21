@@ -5,7 +5,7 @@ using WebStore_2021.Data;
 using WebStore_2021.Infrastructure.Interfaces;
 using WebStore_2021.Models;
 
-namespace WebStore_2021.Infrastructure.Services
+namespace WebStore_2021.Infrastructure.Services.Inmemory
 {
     public class InMemoryEmployeesData : IEmployeesData
     {

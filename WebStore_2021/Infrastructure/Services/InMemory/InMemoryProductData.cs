@@ -5,7 +5,7 @@ using WebStore.Domain.Entities;
 using WebStore_2021.Data;
 using WebStore_2021.Infrastructure.Interfaces;
 
-namespace WebStore_2021.Infrastructure.Services
+namespace WebStore_2021.Infrastructure.Services.InMemory
 {
     public class InMemoryProductData : IProductData
     {

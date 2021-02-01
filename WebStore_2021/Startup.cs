@@ -12,6 +12,8 @@ using WebStore_2021.Infrastructure.Conventions;
 using WebStore_2021.Infrastructure.Interfaces;
 using WebStore_2021.Infrastructure.Middleware;
 using WebStore_2021.Infrastructure.Services;
+using WebStore_2021.Infrastructure.Services.Inmemory;
+using WebStore_2021.Infrastructure.Services.InSQL;
 
 namespace WebStore_2021
 {
@@ -25,7 +27,8 @@ namespace WebStore_2021
 
             //регистрируем сервисы
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
-            services.AddTransient<IProductData, InMemoryProductData>();
+            //services.AddTransient<IProductData, InMemoryProductData>();
+            services.AddTransient<IProductData, SQLProductData>();
 
             services
                 .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConvention())*/)
