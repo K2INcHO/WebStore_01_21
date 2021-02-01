@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using WebStore.DAL.Context;
+using WebStore_2021.Data;
 using WebStore_2021.Infrastructure.Conventions;
 using WebStore_2021.Infrastructure.Interfaces;
 using WebStore_2021.Infrastructure.Middleware;
@@ -20,6 +21,7 @@ namespace WebStore_2021
         {
             //services.AddDbContext<WebStoreDB>(opt => opt.UseSqlite(Configuration.GetConnectionString("Sqlite")));
             services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddTransient<WebStoreDbInitializer>();
 
             //регистрируем сервисы
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
@@ -30,8 +32,10 @@ namespace WebStore_2021
                 .AddRazorRuntimeCompilation();
         }
         // Все вызовы к классу App - добавление промежуточного ПО (настройка конвейера)
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, IServiceProvider services*/)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer db)
         {
+            db.Initialize();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage(); // добавляется страница обработки исключений
