@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using WebStore.DAL.Context;
+using WebStore.Domain.Entities.Identity;
 using WebStore_2021.Data;
 using WebStore_2021.Infrastructure.Conventions;
 using WebStore_2021.Infrastructure.Interfaces;
@@ -25,6 +27,43 @@ namespace WebStore_2021
             services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddTransient<WebStoreDbInitializer>();
 
+            services.AddIdentity<User, Role>(/*opt => { }*/)
+                .AddEntityFrameworkStores<WebStoreDB>()
+                .AddDefaultTokenProviders();
+
+            // конфигурация системы Identity
+            services.Configure<IdentityOptions>(opt =>
+            {
+#if DEBUG
+                opt.Password.RequiredLength = 3;
+                opt.Password.RequireDigit = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequiredUniqueChars = 3;
+#endif
+                opt.User.RequireUniqueEmail = false;
+                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+                opt.Lockout.AllowedForNewUsers = false;
+                opt.Lockout.MaxFailedAccessAttempts = 10;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+            });
+
+            // конфигурация системы Cookes
+            services.ConfigureApplicationCookie(opt =>
+            {
+                opt.Cookie.Name = "WebStore.GB";
+                opt.Cookie.HttpOnly = true;
+                opt.Cookie.Expiration = TimeSpan.FromDays(10);
+
+                opt.LoginPath = "/Account/Login";
+                opt.LogoutPath = "/Account/Logout";
+                opt.AccessDeniedPath = "/Account/AccessDenied";
+
+                opt.SlidingExpiration = true;
+            });
+
             //регистрируем сервисы
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
             //services.AddTransient<IProductData, InMemoryProductData>();
@@ -42,12 +81,15 @@ namespace WebStore_2021
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage(); // добавляется страница обработки исключений
-                app.UseBrowserLink();
+                app.UseBrowserLink();   // добавляем скрипт в конец страницы для подключения к студии (для отладки)
             }
 
             app.UseStaticFiles(); //подключаем статическое содержимое (по умолчанию будет жить в wwwroot) - срабатывает проверка на обработку файла
 
             app.UseRouting(); // происходит извлечение информации о маршрутах
+
+            app.UseAuthentication();    // извлекает из cookes объект пользователя и десерилезует его
+            app.UseAuthorization();
 
             app.UseWelcomePage("/welcome");
 
