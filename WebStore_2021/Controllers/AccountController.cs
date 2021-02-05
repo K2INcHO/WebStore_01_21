@@ -74,5 +74,17 @@ namespace WebStore_2021.Controllers
             return View(Model);
         }
         #endregion
+
+        public async Task<IActionResult> Login()
+        {
+            await _SignInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult AccessDenied(string ReturnUrl)
+        {
+            ViewBag.ReturnUrl = ReturnUrl;
+            return View();       
+        }
     }
 }
