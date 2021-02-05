@@ -55,7 +55,7 @@ namespace WebStore_2021
             {
                 opt.Cookie.Name = "WebStore.GB";
                 opt.Cookie.HttpOnly = true;
-                opt.Cookie.Expiration = TimeSpan.FromDays(10);
+                opt.ExpireTimeSpan = TimeSpan.FromDays(10);
 
                 opt.LoginPath = "/Account/Login";
                 opt.LogoutPath = "/Account/Logout";
