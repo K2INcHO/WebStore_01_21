@@ -15,8 +15,8 @@ namespace WebStore_2021.Controllers
     {
         private IEmployeesData _EmployeesData;
 
-        public EmployeesController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData; 
-        
+        public EmployeesController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData;
+
 
         //[Route("all")]
         public IActionResult Index() => View(_EmployeesData.Get());
@@ -49,23 +49,28 @@ namespace WebStore_2021.Controllers
             {
                 Id = employee.Id,
                 LastName = employee.LastName,
-                FirstName = employee.FirstName,
+                Name = employee.FirstName,
                 MiddleName = employee.Patronymic,
                 Age = employee.Age,
             });
         }
-        
+
         [HttpPost]
         public IActionResult Edit(EmployeeViewModel model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
+            if (model.Name == "Усама" && model.MiddleName == "бен" && model.LastName == "Байден")
+                ModelState.AddModelError("", "Его выбрали нечестно!");
+
+            if (ModelState.IsValid) return View(model);
+
             var employee = new Employee
             {
                 Id = model.Id,
                 LastName = model.LastName,
-                FirstName = model.FirstName,
+                FirstName = model.Name,
                 Patronymic = model.MiddleName,
                 Age = model.Age
             };
@@ -93,7 +98,7 @@ namespace WebStore_2021.Controllers
             {
                 Id = employee.Id,
                 LastName = employee.LastName,
-                FirstName = employee.FirstName,
+                Name = employee.FirstName,
                 MiddleName = employee.Patronymic,
                 Age = employee.Age,
             });
@@ -106,7 +111,7 @@ namespace WebStore_2021.Controllers
             return RedirectToAction("Index");
         }
         #endregion
- 
+
 
         ////визуализируем список сотрудников
         //public IActionResult Employees()

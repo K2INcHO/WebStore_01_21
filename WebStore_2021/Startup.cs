@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using WebStore_2021.Infrastructure.Conventions;
 using WebStore_2021.Infrastructure.Interfaces;
 using WebStore_2021.Infrastructure.Middleware;
@@ -15,16 +16,16 @@ namespace WebStore_2021
     {  
         public void ConfigureServices(IServiceCollection services)
         {
-            //регистрируем сервис
+            //регистрируем сервисы
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
+            services.AddTransient<IProductData, InMemoryProductData>();
 
-            //services.AddMvc(opt => opt.Conventions.Add(new TestControllerModelConvention())); // можно писать так
             services
                 .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConvention())*/)
                 .AddRazorRuntimeCompilation();
         }
         // Все вызовы к классу App - добавление промежуточного ПО (настройка конвейера)
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, IServiceProvider services*/)
         {
             if (env.IsDevelopment())
             {
@@ -49,12 +50,6 @@ namespace WebStore_2021
             //прописываем маршруты
             app.UseEndpoints(endpoints =>
             {
-                // Проекция запроса на действие
-                endpoints.MapGet("/greetings", async context =>
-                {
-                    await context.Response.WriteAsync("Greetings");
-                });
-
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}"); //? - значит, что параметр необязателен
