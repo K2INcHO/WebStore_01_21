@@ -64,7 +64,7 @@ namespace WebStore_2021.Controllers
             if (model.Name == "Усама" && model.MiddleName == "бен" && model.LastName == "Байден")
                 ModelState.AddModelError("", "Его выбрали нечестно!");
 
-            if (ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid) return View(model);
 
             var employee = new Employee
             {
