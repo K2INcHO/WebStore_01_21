@@ -31,6 +31,11 @@ namespace WebStore_2021.Infrastructure.Services.InSQL
                 query = query.Where(product => product.BrandId == brand_id);
 
             return query;
-        }   
+        }
+
+        public Product GetProductById(int id) => _db.Products
+            .Include(product => product.Brand)
+            .Include(product => product.Section)
+            .FirstOrDefault(Product => Product.Id == id);
     }
 }
