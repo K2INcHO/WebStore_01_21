@@ -92,7 +92,7 @@ namespace WebStore_2021.Infrastructure.Services.InCookies
             Cart = cart;
         }
 
-        public void Clear(int id)
+        public void Clear()
         {
             var cart = Cart;
             cart.Items.Clear();
