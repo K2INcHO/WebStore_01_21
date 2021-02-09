@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain.Entities.Identity;
 using WebStore_2021.Data;
 using WebStore_2021.Infrastructure.Interfaces;
 using WebStore_2021.Models;
@@ -11,6 +13,7 @@ using WebStore_2021.ViewModels;
 namespace WebStore_2021.Controllers
 {
     //[Route("Staff")]
+    [Authorize]
     public class EmployeesController : Controller
     {
         private IEmployeesData _EmployeesData;
@@ -33,6 +36,7 @@ namespace WebStore_2021.Controllers
         public IActionResult Create() => View("Edit", new EmployeeViewModel());
 
         #region Edit
+        [Authorize(Roles = Role.Administrator)]
         public IActionResult Edit(int? id)
         {
             if (id is null)
@@ -64,7 +68,7 @@ namespace WebStore_2021.Controllers
             if (model.Name == "Усама" && model.MiddleName == "бен" && model.LastName == "Байден")
                 ModelState.AddModelError("", "Его выбрали нечестно!");
 
-            if (ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid) return View(model);
 
             var employee = new Employee
             {

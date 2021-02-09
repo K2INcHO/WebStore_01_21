@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using WebStore.DAL.Context;
+using WebStore.Domain.Entities.Identity;
 
 namespace WebStore_2021.Data
 {
@@ -11,11 +14,20 @@ namespace WebStore_2021.Data
     {
         private readonly WebStoreDB _db;
         private readonly ILogger<WebStoreDbInitializer> _Logger;
+        private readonly UserManager<User> _UserManager;
+        private readonly RoleManager<Role> _RoleManager;
 
-        public WebStoreDbInitializer(WebStoreDB db, ILogger<WebStoreDbInitializer> Logger)
+        public WebStoreDbInitializer(
+            WebStoreDB db,
+            ILogger<WebStoreDbInitializer> Logger,
+            UserManager<User> UserManager,
+            RoleManager<Role> RoleManager
+            )
         {
             _db = db;
             _Logger = Logger;
+            _UserManager = UserManager;
+            _RoleManager = RoleManager;
         }
 
         public void Initialize()
@@ -41,6 +53,7 @@ namespace WebStore_2021.Data
             try
             {
                 InitializeProducts();
+                InitializeIdentityAsync().Wait();
             }
             catch (Exception error)
             {
@@ -108,6 +121,50 @@ namespace WebStore_2021.Data
 
             _Logger.LogInformation("Инициализация товаров выполнена успешно  ({0:0.0###})",
                 timer.Elapsed.TotalSeconds);
+        }
+
+        private async Task InitializeIdentityAsync()
+        {
+            var timer = Stopwatch.StartNew();
+            _Logger.LogInformation("Инициализация системы Identity...");
+
+            async Task CheckRole(string RoleName)
+            {
+                if (!await _RoleManager.RoleExistsAsync(RoleName))
+                {
+                    _Logger.LogInformation("Роль {0} отсутствует. Создаю...");
+                    await _RoleManager.CreateAsync(new Role { Name = RoleName });
+                    _Logger.LogInformation("Роль {0} создана успешно!");
+                }
+            }
+
+            await CheckRole(Role.Administrator);
+            await CheckRole(Role.Users);
+
+            if (await _UserManager.FindByEmailAsync(User.Administrator) is null)
+            {
+                _Logger.LogInformation("Отсутствует учетная запись администратора");
+                var admin = new User
+                {
+                    UserName = User.Administrator
+                };
+
+                var creation_result = await _UserManager.CreateAsync(admin, User.DefaultAdminPassword);
+                if (creation_result.Succeeded)
+                {
+                    _Logger.LogInformation("Учетная запись администратора создана успешно!");
+                    await _UserManager.AddToRoleAsync(admin, Role.Administrator);
+                    _Logger.LogInformation("Учетная запись администратора наделена ролью {0}", Role.Administrator);
+                }
+                else
+                {
+                    var errors = creation_result.Errors.Select(e => e.Description);
+                    throw new InvalidOperationException($"Ошибка при создании учетной записи администратора: {string.Join(",", errors)}");
+                }
+            }
+
+
+            _Logger.LogInformation("Инициализация системы Identity завершена успешно за {0:0.0##}с", timer.Elapsed.Seconds);
         }
     }
 }

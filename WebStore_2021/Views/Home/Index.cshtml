@@ -1,17 +1,12 @@
-﻿@using WebStore_2021.Infrastructure.Interfaces
+﻿@using WebStore_2021.Infrastructure.Mapping;
+@using WebStore_2021.Infrastructure.Interfaces
 @inject IProductData ProductData
 @{ 
     var products = ProductData
         .GetProducts()
         .OrderBy(p => p.Order)
         .Take(6)
-        .Select(p => new ProductViewModel
-        {
-            Id = p.Id,
-            Name = p.Name,
-            Price = p.Price,
-            ImageUrl = p.ImageUrl
-        });
+        .ToView();
 } 
 
 <partial name="Partial/_Slider"/>
