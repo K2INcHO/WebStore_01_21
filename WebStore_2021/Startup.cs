@@ -14,6 +14,7 @@ using WebStore_2021.Infrastructure.Conventions;
 using WebStore_2021.Infrastructure.Interfaces;
 using WebStore_2021.Infrastructure.Middleware;
 using WebStore_2021.Infrastructure.Services;
+using WebStore_2021.Infrastructure.Services.InCookies;
 using WebStore_2021.Infrastructure.Services.Inmemory;
 using WebStore_2021.Infrastructure.Services.InSQL;
 
@@ -68,6 +69,7 @@ namespace WebStore_2021
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
             //services.AddTransient<IProductData, InMemoryProductData>();
             services.AddTransient<IProductData, SQLProductData>();
+            services.AddTransient<ICartService, InCookiesCartService>();
 
             services
                 .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConvention())*/)
