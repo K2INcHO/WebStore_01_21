@@ -141,7 +141,7 @@ namespace WebStore_2021.Data
             await CheckRole(Role.Administrator);
             await CheckRole(Role.Users);
 
-            if (await _UserManager.FindByEmailAsync(User.Administrator) is null)
+            if (await _UserManager.FindByNameAsync(User.Administrator) is null)
             {
                 _Logger.LogInformation("Отсутствует учетная запись администратора");
                 var admin = new User

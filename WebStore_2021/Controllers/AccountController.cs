@@ -25,7 +25,7 @@ namespace WebStore_2021.Controllers
 
         #region Register
         [AllowAnonymous]
-        public IActionResult Reqister() => View(new RegisterUserViewModel());
+        public IActionResult Register() => View(new RegisterUserViewModel());
 
         [AllowAnonymous]
         [HttpPost, ValidateAntiForgeryToken/*, ActionName("Register")*/]
@@ -97,7 +97,7 @@ namespace WebStore_2021.Controllers
         }
         #endregion
 
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Logout()
         {
             await _SignInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
