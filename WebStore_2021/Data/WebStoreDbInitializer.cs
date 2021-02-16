@@ -77,49 +77,103 @@ namespace WebStore_2021.Data
 
             _Logger.LogInformation("Инициализация товаров...");
 
-            _Logger.LogInformation("Добавление секций...");
-            using (_db.Database.BeginTransaction())
+            var products_sections = TestData.Sections.Join(
+                TestData.Products,
+                s => s.Id,
+                p => p.SectionId,
+                (section, product) => (section, product));
+
+            foreach(var (section, product) in products_sections)
+                section.Products.Add(product);
+            
+
+            var products_brands = TestData.Brands.Join(
+                TestData.Products,
+                b => b.Id,
+                p => p.BrandId,
+                (section, product) => (section, product));
+
+            foreach (var (brand, product) in products_brands)
+                brand.Products.Add(product);
+
+            var section_section = TestData.Sections.Join(
+                TestData.Sections,
+                parent_section => parent_section.Id,
+                child_section => child_section.ParentId,
+                (parent, child) => (parent, child));
+
+            foreach (var (parent, child) in section_section)
+                child.Parent = parent;
+
+            foreach (var product in TestData.Products)
             {
-                _db.Sections.AddRange(TestData.Sections);
-
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] ON");
-                _db.SaveChanges();  // все изменения заносятся в базу данных
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] OFF");
-
-                _db.Database.CommitTransaction();
+                product.Id = 0;
+                product.SectionId = 0;
+                product.BrandId = null;
             }
-            _Logger.LogInformation("Секции успешно добавлены в БД");
 
-
-            _Logger.LogInformation("Добавление брендов...");
-            using (_db.Database.BeginTransaction())
+            foreach(var section in TestData.Sections)
             {
-                _db.Brands.AddRange(TestData.Brands);
-
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] ON");
-                _db.SaveChanges();  // все изменения заносятся в базу данных
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] OFF");
-
-                _db.Database.CommitTransaction();
+                section.Id = 0;
+                section.ParentId = null;
             }
-            _Logger.LogInformation("Бренды успешно добавлены в БД");
 
+            foreach (var brand in TestData.Sections) brand.Id = 0;
 
-            _Logger.LogInformation("Добавление товаров...");
             using (_db.Database.BeginTransaction())
             {
                 _db.Products.AddRange(TestData.Products);
+                _db.Sections.AddRange(TestData.Sections);
+                _db.Brands.AddRange(TestData.Brands);
 
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] ON");
-                _db.SaveChanges();  // все изменения заносятся в базу данных
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] OFF");
-
+                _db.SaveChanges();
                 _db.Database.CommitTransaction();
             }
-            _Logger.LogInformation("Товары успешно добавлены в БД");
 
 
-            _Logger.LogInformation("Инициализация товаров выполнена успешно  ({0:0.0###})",
+                //_Logger.LogInformation("Добавление секций...");
+                //using (_db.Database.BeginTransaction())
+                //{
+                //    _db.Sections.AddRange(TestData.Sections);
+
+                //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] ON");
+                //    _db.SaveChanges();  // все изменения заносятся в базу данных
+                //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] OFF");
+
+                //    _db.Database.CommitTransaction();
+                //}
+                //_Logger.LogInformation("Секции успешно добавлены в БД");
+
+
+                //_Logger.LogInformation("Добавление брендов...");
+                //using (_db.Database.BeginTransaction())
+                //{
+                //    _db.Brands.AddRange(TestData.Brands);
+
+                //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] ON");
+                //    _db.SaveChanges();  // все изменения заносятся в базу данных
+                //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] OFF");
+
+                //    _db.Database.CommitTransaction();
+                //}
+                //_Logger.LogInformation("Бренды успешно добавлены в БД");
+
+
+                //_Logger.LogInformation("Добавление товаров...");
+                //using (_db.Database.BeginTransaction())
+                //{
+                //    _db.Products.AddRange(TestData.Products);
+
+                //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] ON");
+                //    _db.SaveChanges();  // все изменения заносятся в базу данных
+                //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] OFF");
+
+                //    _db.Database.CommitTransaction();
+                //}
+                //_Logger.LogInformation("Товары успешно добавлены в БД");
+
+
+                _Logger.LogInformation("Инициализация товаров выполнена успешно  ({0:0.0###})",
                 timer.Elapsed.TotalSeconds);
         }
 
