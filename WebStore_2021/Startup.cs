@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Infrastructure.Services.InSQL;
 using WebStore_2021.Data;
 using WebStore_2021.Infrastructure.Conventions;
 using WebStore_2021.Infrastructure.Interfaces;

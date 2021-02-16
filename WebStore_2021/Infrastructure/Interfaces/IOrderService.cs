@@ -13,6 +13,6 @@ namespace WebStore_2021.Infrastructure.Interfaces
 
         Task<Order> GetOrderById(int id);
 
-        Task<Order> GetOrder(string Username, CartViewModel Cart, OrderViewModel OrderModel);
+        Task<Order> CreateOrder(string Username, CartViewModel Cart, OrderViewModel OrderModel);
     }
 }
