@@ -73,6 +73,7 @@ namespace WebStore_2021
             //services.AddTransient<IProductData, InMemoryProductData>();
             services.AddTransient<IProductData, SQLProductData>();
             services.AddTransient<ICartService, InCookiesCartService>();
+            services.AddTransient<IOrderService, SqlOrderService>();
 
             services
                 .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConvention())*/)
