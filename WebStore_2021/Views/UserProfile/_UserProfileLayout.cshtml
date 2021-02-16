@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div calss="row">
+        <div calss="col-md-3">
+            <partial name="Partial/_UserProfileMenu"/>
+        </div>
+        <div calss="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
